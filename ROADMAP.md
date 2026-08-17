@@ -176,3 +176,4 @@
 2. Phase 1 最小闭环已完成：`scripts/upstream-sync.mjs` + `.github/workflows/sync-upstream.yml` + `sync/upstream` label + 冲突 issue 路径。
 3. Phase 1 剩余：vendor 同步补丁序列化 + 审批库 / 自动合并（审批 bot 见 issue #1）。
 4. 新增 vendor 上游检查：`scripts/check-vendor-upstream.mjs` + `.github/workflows/vendor-upstream-check.yml`（见 issue #2）。
+5. Phase 2 已启动：独立 `desktop/` Tauri 2 壳，`cargo check` 通过；下一步集成回 `apps/desktop` 并接入 `ctx.desktop` 插件。

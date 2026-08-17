@@ -1,0 +1,14 @@
+{
+  "name": "@deepseek-ai/dsh-desktop-shell",
+  "version": "0.1.0-rc.5",
+  "private": true,
+  "description": "Standalone Tauri shell for oh-my-dsh-plus. Not part of the pnpm workspace yet; integration into apps/desktop comes after the shell compiles and the workspace lockfile is regenerated.",
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "tauri build",
+    "tauri": "tauri"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.0.0"
+  }
+}
