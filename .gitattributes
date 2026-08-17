@@ -11,3 +11,15 @@
 # Pairing records are generated from the three confirmed owner-blob pairs.
 # The worktree-local installer registers the fail-closed driver command.
 *.i18n.yaml merge=dsh-translation-pairing
+
+# oh-my-dsh-plus: paths where our standards win during upstream sync.
+# Requires the local driver: git config merge.ours.driver true
+# CI must run the same config before any upstream merge.
+vendor/** merge=ours
+vendor/README.md merge=ours
+packages/core/agent-loop/** merge=ours
+AGENTS.md merge=ours
+ROADMAP.md merge=ours
+.github/CODEOWNERS merge=ours
+.github/workflows/sync-upstream.yml merge=ours
+

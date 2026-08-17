@@ -1,0 +1,10 @@
+# oh-my-dsh-plus: our-standards paths.
+# Upstream sync PRs touching these paths must get owner review before merge.
+# GitHub resolves @ChenXu233 against the repository owner.
+
+vendor/ @ChenXu233
+packages/core/agent-loop/ @ChenXu233
+AGENTS.md @ChenXu233
+ROADMAP.md @ChenXu233
+.github/CODEOWNERS @ChenXu233
+.github/workflows/sync-upstream.yml @ChenXu233
