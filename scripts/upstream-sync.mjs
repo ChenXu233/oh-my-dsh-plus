@@ -23,7 +23,7 @@ const UPSTREAM_REPO = 'https://github.com/deepseek-ai/deepseek-harness.git'
 
 function run(cmd, { allowFailure = false } = {}) {
   try {
-    const stdout = execFileSync('bash', ['-lc', cmd], {
+    const stdout = execFileSync('bash', ['-c', cmd], {
       encoding: 'utf8',
       stdio: ['ignore', 'pipe', 'pipe'],
     })

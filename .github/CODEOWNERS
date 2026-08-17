@@ -9,3 +9,5 @@ ROADMAP.md @ChenXu233
 .github/CODEOWNERS @ChenXu233
 .github/workflows/sync-upstream.yml @ChenXu233
 scripts/upstream-sync.mjs @ChenXu233
+scripts/check-vendor-upstream.mjs @ChenXu233
+.github/workflows/vendor-upstream-check.yml @ChenXu233
