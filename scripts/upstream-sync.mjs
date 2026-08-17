@@ -61,6 +61,9 @@ function main() {
 
   console.log(`master is behind upstream/master by ${behind} commit(s)`)
 
+  // Ensure the sync label exists; PRs and issues both carry it.
+  run('gh label create sync/upstream --color 0E8A16 --description "Automated upstream sync" --force', { allowFailure: true })
+
   // Always work from master.
   run('git checkout master')
 
@@ -116,6 +119,7 @@ function main() {
     run(
       `gh pr create --base master --head ${branch} ` +
         `--title "chore: sync upstream ${shortSha}" ` +
+        `--label sync/upstream ` +
         `--body "${prBody.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`,
     )
     console.log(`Created sync PR from ${branch}`)
@@ -161,6 +165,7 @@ function main() {
   run(
     `gh issue create ` +
       `--title "chore: sync upstream ${shortSha} — merge conflicts need manual sync" ` +
+      `--label sync/upstream ` +
       `--body "${issueBody.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`,
   )
   console.log('Merge conflicts remain; opened a manual-sync issue.')
