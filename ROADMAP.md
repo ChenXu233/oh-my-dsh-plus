@@ -35,16 +35,16 @@
 
 ## 3. Phase 0：同步地基
 
-- [ ] `git remote add upstream https://github.com/deepseek-ai/deepseek-harness.git`
-- [ ] `git fetch upstream master` 并 `git merge --ff-only upstream/master`
-- [ ] 仓库级开启 `git config rerere.enabled true`、`rerere.autoupdate true`
-- [ ] 建立分支模型：
+- [x] `git remote add upstream https://github.com/deepseek-ai/deepseek-harness.git`
+- [x] `git fetch upstream master` 并 `git merge --ff-only upstream/master`
+- [x] 仓库级开启 `git config rerere.enabled true`、`rerere.autoupdate true`
+- [x] 建立分支模型：
   - `master`：我们的主干。
   - `upstream/master`：只读跟踪。
   - `sync/upstream-YYYYMMDD-<sha>`：每次同步 PR 分支。
-- [ ] GitHub 分支保护：`master` 要求 `check:ci:static`、`check:ci:coverage`、`check:ci:snapshot`（或 `check:ci` 主门禁）通过，禁止直接 push。
-- [ ] 补 `CODEOWNERS`：`vendor/**`、`packages/core/agent-loop/**`、`AGENTS.md`、`.github/workflows/**` 归我们所有。
-- [ ] `.gitattributes` 对“必须遵循我们标准”的路径设置 `merge=ours`。
+- [x] GitHub 分支保护：`master` 要求 `check:ci:static`、`check:ci:coverage`、`check:ci:snapshot`（或 `check:ci` 主门禁）通过，禁止直接 push。
+- [x] 补 `CODEOWNERS`：`vendor/**`、`packages/core/agent-loop/**`、`AGENTS.md`、`.github/workflows/**` 归我们所有。
+- [x] `.gitattributes` 对“必须遵循我们标准”的路径设置 `merge=ours`。
 
 ## 4. Phase 1：上游同步与自动化审批
 
@@ -170,8 +170,8 @@
 | WASM 插件能力受限 | 分层 ABI：WASM 不够时用 sidecar 或 napi-rs |
 | 多语言 SDK 维护成本 | 先只提供 Rust SDK + WIT，其它语言用通用 sidecar JSON-RPC |
 
-## 9. 下一步动作
+## 9. 当前进度
 
-1. Phase 0 立刻执行：加 upstream、快进、开 rerere、补 CODEOWNERS。
-2. Phase 1 写 `scripts/upstream-sync.mjs` + workflow + 审批库。
-3. Phase 1 的 vendor 同步补丁序列化。
+1. Phase 0 已完成：upstream、快进、rerere、CODEOWNERS、`.gitattributes merge=ours`、分支保护。
+2. Phase 1 最小闭环已完成：`scripts/upstream-sync.mjs` + `.github/workflows/sync-upstream.yml` + `sync/upstream` label + 冲突 issue 路径。
+3. Phase 1 剩余：vendor 同步补丁序列化 + 审批库 / 自动合并（按 ROADMAP 第 4 节继续）。
