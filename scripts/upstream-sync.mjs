@@ -37,6 +37,15 @@ function run(cmd, { allowFailure = false } = {}) {
   }
 }
 
+function githubRepo() {
+  const fromEnv = process.env.GITHUB_REPOSITORY || process.env.GH_REPO
+  if (fromEnv) return fromEnv
+  const url = run('git remote get-url origin')
+  const match = url.match(/github\.com[/:]([^/]+\/[^/.]+?)(?:\.git)?$/)
+  if (!match) throw new Error(`Cannot derive GitHub repo from origin URL: ${url}`)
+  return match[1]
+}
+
 function main() {
   // Make sure the upstream remote exists.
   const remotes = run('git remote')
@@ -60,9 +69,10 @@ function main() {
   const branch = `sync/upstream-${stamp}-${shortSha}`
 
   console.log(`master is behind upstream/master by ${behind} commit(s)`)
+  const repo = githubRepo()
 
   // Ensure the sync label exists; PRs and issues both carry it.
-  run('gh label create sync/upstream --color 0E8A16 --description "Automated upstream sync" --force', { allowFailure: true })
+  run(`gh label create sync/upstream --repo ${repo} --color 0E8A16 --description "Automated upstream sync" --force`, { allowFailure: true })
 
   // Always work from master.
   run('git checkout master')
@@ -117,7 +127,7 @@ function main() {
     ].join('\n')
 
     run(
-      `gh pr create --base master --head ${branch} ` +
+      `gh pr create --repo ${repo} --base master --head ${branch} ` +
         `--title "chore: sync upstream ${shortSha}" ` +
         `--label sync/upstream ` +
         `--body "${prBody.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`,
@@ -158,12 +168,12 @@ function main() {
     'git merge --no-ff upstream/master',
     '# resolve conflicts, then:',
     'git commit',
-    `gh pr create --base master --head ${branch} --title "chore: sync upstream ${shortSha}"`,
+    `gh pr create --repo ${repo} --base master --head ${branch} --title "chore: sync upstream ${shortSha}"`,
     '```',
   ].join('\n')
 
   run(
-    `gh issue create ` +
+    `gh issue create --repo ${repo} ` +
       `--title "chore: sync upstream ${shortSha} — merge conflicts need manual sync" ` +
       `--label sync/upstream ` +
       `--body "${issueBody.replace(/"/g, '\\"').replace(/\n/g, '\\n')}"`,
