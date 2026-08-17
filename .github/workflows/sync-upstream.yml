@@ -1,0 +1,50 @@
+name: sync-upstream
+
+on:
+  schedule:
+    # Developer preview moves quickly: run every 6 hours.
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: sync-upstream
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out master with full history
+        uses: actions/checkout@v6
+        with:
+          ref: master
+          fetch-depth: 0
+          persist-credentials: true
+          token: ${{ secrets.SYNC_BOT_TOKEN || github.token }}
+
+      - name: Configure git for upstream sync
+        run: |
+          git config user.name "dsh-sync-bot"
+          git config user.email "dsh-sync-bot@users.noreply.github.com"
+          git config merge.ours.driver true
+          git config rerere.enabled true
+          git config rerere.autoupdate true
+
+      - name: Add upstream remote
+        run: |
+          if git remote | grep -qx upstream; then
+            git remote set-url upstream https://github.com/deepseek-ai/deepseek-harness.git
+          else
+            git remote add upstream https://github.com/deepseek-ai/deepseek-harness.git
+          fi
+
+      - name: Run upstream sync
+        env:
+          GH_TOKEN: ${{ secrets.SYNC_BOT_TOKEN || github.token }}
+        run: node scripts/upstream-sync.mjs

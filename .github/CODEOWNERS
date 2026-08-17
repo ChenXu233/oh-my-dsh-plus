@@ -8,3 +8,4 @@ AGENTS.md @ChenXu233
 ROADMAP.md @ChenXu233
 .github/CODEOWNERS @ChenXu233
 .github/workflows/sync-upstream.yml @ChenXu233
+scripts/upstream-sync.mjs @ChenXu233

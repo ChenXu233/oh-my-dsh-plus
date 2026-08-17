@@ -22,4 +22,5 @@ AGENTS.md merge=ours
 ROADMAP.md merge=ours
 .github/CODEOWNERS merge=ours
 .github/workflows/sync-upstream.yml merge=ours
+scripts/upstream-sync.mjs merge=ours
 

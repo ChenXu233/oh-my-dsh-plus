@@ -28,7 +28,7 @@
 | 阶段 | 目标 | 主要交付物 | 验收标准 |
 |---|---|---|---|
 | Phase 0 | 同步地基 | upstream remote、快进、rerere、分支保护、CODEOWNERS | `master == upstream/master`，全门禁绿 |
-| Phase 1 | 自动化同步与审批 | `sync-upstream.yml`、`scripts/upstream-sync.ts`、审批库、vendor 同步半自动化 | 每日自动开 PR；已审批差异自动合入；冲突可重放 |
+| Phase 1 | 自动化同步与审批 | `sync-upstream.yml`、`scripts/upstream-sync.mjs`、审批库、vendor 同步半自动化 | 每日自动开 PR；已审批差异自动合入；冲突可重放 |
 | Phase 2 | Desktop（Tauri） | `apps/desktop`、`packages/desktop/desktop`、三端打包 | Windows/macOS/Linux 可启动桌面应用并跑通 dsh |
 | Phase 3 | Swarm | `packages/swarm/swarm`、`swarm-local`、能力令牌 | 两台机器可通过去中心化网络互操作项目 |
 | Phase 4 | 多语言插件 | WASM/Extism ABI、Rust/Go/Python SDK、重写热路径插件 | 一个 Rust 插件从 `.wasm` 加载并过全门禁 |
@@ -57,7 +57,7 @@
   1. checkout（`fetch-depth: 0`，bot token）。
   2. fetch `upstream/master`。
   3. 计算 `git rev-list --count master..upstream/master`；为 0 则退出。
-  4. 运行 `scripts/upstream-sync.ts`：
+  4. 运行 `scripts/upstream-sync.mjs`：
      - 试合并 `git merge --no-ff --no-commit upstream/master`。
      - 失败则 rerere 重放。
      - 计算每个上游 commit 的 `git patch-id --stable` 与归一化 diff hash。
@@ -173,5 +173,5 @@
 ## 9. 下一步动作
 
 1. Phase 0 立刻执行：加 upstream、快进、开 rerere、补 CODEOWNERS。
-2. Phase 1 写 `scripts/upstream-sync.ts` + workflow + 审批库。
+2. Phase 1 写 `scripts/upstream-sync.mjs` + workflow + 审批库。
 3. Phase 1 的 vendor 同步补丁序列化。
