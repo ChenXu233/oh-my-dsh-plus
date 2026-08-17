@@ -174,4 +174,5 @@
 
 1. Phase 0 已完成：upstream、快进、rerere、CODEOWNERS、`.gitattributes merge=ours`、分支保护。
 2. Phase 1 最小闭环已完成：`scripts/upstream-sync.mjs` + `.github/workflows/sync-upstream.yml` + `sync/upstream` label + 冲突 issue 路径。
-3. Phase 1 剩余：vendor 同步补丁序列化 + 审批库 / 自动合并（按 ROADMAP 第 4 节继续）。
+3. Phase 1 剩余：vendor 同步补丁序列化 + 审批库 / 自动合并（审批 bot 见 issue #1）。
+4. 新增 vendor 上游检查：`scripts/check-vendor-upstream.mjs` + `.github/workflows/vendor-upstream-check.yml`（见 issue #2）。

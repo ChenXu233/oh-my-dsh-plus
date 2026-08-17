@@ -10,7 +10,7 @@ Status: implemented
 
 ## Decision
 
-`.github/workflows/sync-upstream.yml` 每 6 小时拉取 `upstream/master` 并运行 `scripts/upstream-sync.mjs`。当 master 落后时，脚本从 master 创建 `sync/upstream-*` 分支，用 `--no-ff` 合并 `upstream/master`，应用本地的 `merge=ours` 驱动和 `git rerere` 缓存，然后提交合并。它推送分支并创建包含上游提交清单的 PR。当仍有未解决的冲突时，脚本中止合并并创建 issue，列出冲突文件和手工同步命令。workflow 不会自动合并。
+`.github/workflows/sync-upstream.yml` 每 6 小时拉取 `upstream/master` 并运行 `scripts/upstream-sync.mjs`。当 master 落后时，脚本从 master 创建 `sync/upstream-*` 分支，用 `--no-ff` 合并 `upstream/master`，应用本地的 `merge=ours` 驱动和 `git rerere` 缓存，然后提交合并。它推送分支并创建包含上游提交清单的 PR。当仍有未解决的冲突时，脚本中止合并并创建 issue，列出冲突文件和手工同步命令。workflow 不会自动合并。第二个 workflow `.github/workflows/vendor-upstream-check.yml` 每 6 小时解析 `vendor/README.md` manifest，当某个 pinned 上游提交移动或上游仓库不可达时，创建一个去重的 `sync/upstream` issue。
 
 `git config merge.ours.driver true` 是必需配置，本地和 workflow 在合并前都会设置。`.gitattributes` 把以下“我们标准”路径标记为 `merge=ours`：vendored 框架源码、`packages/core/agent-loop`、`AGENTS.md`、`ROADMAP.md`、同步 workflow 和同步脚本。
 
@@ -24,6 +24,7 @@ Status: implemented
 ## Consequences
 
 - 上游漂移至少每 6 小时被发现一次，并变成一个带标签的 PR 或 issue。
+- vendored 包的漂移由 `vendor-upstream-check.yml` 独立检测，并以 `sync/upstream` issue 形式打开。
 - 每次同步都是真正的合并提交，因此 `merge=ours` 和 rerere 路径会在“我们的标准”与上游交汇处实际生效。
 - 分支保护和我们标准路径上的 owner review 仍然是合并门禁。
 - “自动审批以前审批过的差异”有意不在这一版实现。
